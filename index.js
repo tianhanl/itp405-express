@@ -15,6 +15,42 @@ function connect() {
     return connection;
 }
 
+app.get('/api', (request, response) => {
+
+});
+
+app.get('/api/artists', (request, response) => {
+    if (request.query.filter) {
+        connect()
+            .from('artists')
+            .where('Name', 'like', `%${request.query.filter}%`)
+            .then(artists => {
+                response.json(artists.map(element => ({
+                    'id': element.ArtistId,
+                    'name': element.Name
+                })));
+            })
+            .catch(err => {
+                response.send('Error');
+                response.end();
+            });
+    } else {
+        connect()
+            .select()
+            .from('artists')
+            .then(artists => {
+                response.json(artists.map(element => ({
+                    'id': element.ArtistId,
+                    'name': element.Name
+                })));
+            })
+            .catch(err => {
+                response.send('Error');
+                response.end();
+            });
+    }
+});
+
 app.get('/genres', (request, response) => {
     connect()
         .select()

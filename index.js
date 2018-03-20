@@ -76,9 +76,15 @@ app.get('/genres/:id', (request, response) => {
             response.end();
         });
 });
+// catch all undefine routes with 404
+app.use((req, res) => {
+    res.type('text/plain');
+    res.status(404);
+    res.send('404 - Resource Not Found');
+});
 
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
-    console.log('Listenling on port 80');
+    console.log(`listening on port ${port}`);
 });
